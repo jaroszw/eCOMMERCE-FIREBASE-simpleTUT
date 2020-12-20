@@ -5,6 +5,7 @@ import { auth, handleUserProfile } from '../../firebase/utils';
 
 import FormInput from '../../components/Form/FormInput';
 import Button from '../../components/Form/Button';
+import AuthWrapper from '../../components/AuthWrapper';
 
 const initialState = {
   displayName: '',
@@ -30,15 +31,8 @@ class Signup extends Component {
 
   handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(e);
 
-    const {
-      displayName,
-      email,
-      password,
-      confirmPassword,
-      errors,
-    } = this.state;
+    const { displayName, email, password, confirmPassword } = this.state;
 
     if (password !== confirmPassword) {
       const err = ["Password don't Match"];
@@ -49,12 +43,12 @@ class Signup extends Component {
     }
 
     try {
-      const { userAuth } = await auth.createUserWithEmailAndPassword(
+      const { user } = await auth.createUserWithEmailAndPassword(
         email,
         password
       );
 
-      await handleUserProfile(userAuth, { displayName });
+      await handleUserProfile(user, { displayName });
 
       this.setState({
         ...initialState,
@@ -73,18 +67,17 @@ class Signup extends Component {
       errors,
     } = this.state;
 
+    const configAuthWrapper = { headline: 'Sign Up' };
+
     return (
-      <div className="signup">
-        <div className="wrap">
-          <h2>SignUp</h2>
-          {errors.length > 0 && (
-            <ul>
-              {errors.map((err, index) => {
-                return <li key={index}>{err}</li>;
-              })}
-            </ul>
-          )}
-        </div>
+      <AuthWrapper {...configAuthWrapper}>
+        {errors.length > 0 && (
+          <ul>
+            {errors.map((err, index) => {
+              return <li key={index}>{err}</li>;
+            })}
+          </ul>
+        )}
 
         <div className="formWrap">
           <form onSubmit={this.handleFormSubmit}>
@@ -119,7 +112,7 @@ class Signup extends Component {
             <Button type="submit">Register</Button>
           </form>
         </div>
-      </div>
+      </AuthWrapper>
     );
   }
 }
