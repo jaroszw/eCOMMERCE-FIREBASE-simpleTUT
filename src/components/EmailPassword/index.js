@@ -32,11 +32,11 @@ class EmailPassword extends Component {
 
     try {
       const { email } = this.state;
-      // const config = {
-      //   url: 'http://localhost:3000/',
-      // };
+      const config = {
+        url: 'http://localhost:3000/login',
+      };
       await auth
-        .sendPasswordResetEmail(email)
+        .sendPasswordResetEmail(email, config)
         .then(() => {
           const { history } = this.props;
           history.push('/login');
