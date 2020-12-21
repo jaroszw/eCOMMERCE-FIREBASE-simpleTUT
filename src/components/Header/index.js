@@ -1,10 +1,10 @@
-import React from 'react';
-import './styles.scss';
-import logo from '../../assets/logo.png';
-import { Link } from 'react-router-dom';
-import { auth } from './../../firebase/utils';
+import React from "react";
+import "./styles.scss";
+import logo from "../../assets/logo.png";
+import { Link } from "react-router-dom";
+import { auth } from "./../../firebase/utils";
 
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 const Header = ({ currentUser }) => {
   return (
@@ -16,7 +16,16 @@ const Header = ({ currentUser }) => {
           </Link>
         </div>
         <div className="callToAction">
-          {currentUser && <span onClick={() => auth.signOut()}>Log Out</span>}
+          {currentUser && (
+            <ul>
+              <li>
+                <Link to="/dashboard">My Account</Link>
+              </li>
+              <li>
+                <span onClick={() => auth.signOut()}>Log Out</span>
+              </li>
+            </ul>
+          )}
 
           {!currentUser && (
             <ul>

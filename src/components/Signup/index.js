@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
-import './styles.scss';
+import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+import "./styles.scss";
 
-import { auth, handleUserProfile } from '../../firebase/utils';
+import { auth, handleUserProfile } from "../../firebase/utils";
 
-import FormInput from '../../components/Form/FormInput';
-import Button from '../../components/Form/Button';
-import AuthWrapper from '../../components/AuthWrapper';
+import FormInput from "../../components/Form/FormInput";
+import Button from "../../components/Form/Button";
+import AuthWrapper from "../../components/AuthWrapper";
 
-const Signup = () => {
-  const [displayName, setDisplayName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+const Signup = (props) => {
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
   const resetState = () => {
-    setDisplayName('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
+    setDisplayName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
     setErrors([]);
   };
 
@@ -39,12 +40,14 @@ const Signup = () => {
 
       await handleUserProfile(user, { displayName });
       resetState();
+      console.log(props);
+      props.history.push("/");
     } catch (err) {
       console.log(err);
     }
   };
 
-  const configAuthWrapper = { headline: 'Sign Up' };
+  const configAuthWrapper = { headline: "Sign Up" };
 
   return (
     <AuthWrapper {...configAuthWrapper}>
@@ -93,4 +96,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default withRouter(Signup);

@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import './styles.scss';
+import React, { useState } from "react";
+import "./styles.scss";
 
-import { auth, SignInWithGoogle } from '../../firebase/utils';
-import { Link } from 'react-router-dom';
+import { auth, SignInWithGoogle } from "../../firebase/utils";
+import { Link, withRouter } from "react-router-dom";
 
-import Button from '../Form/Button';
-import FromInput from '../Form/FormInput';
-import AuthWrapper from '../../components/AuthWrapper';
+import Button from "../Form/Button";
+import FromInput from "../Form/FormInput";
+import AuthWrapper from "../../components/AuthWrapper";
 
-const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const SignIn = (props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const resetForm = () => {
-    setEmail('');
-    setPassword('');
+    setEmail("");
+    setPassword("");
   };
 
   const handleSubmit = async (e) => {
@@ -22,12 +22,13 @@ const SignIn = () => {
     try {
       await auth.signInWithEmailAndPassword(email, password);
       resetForm();
+      props.history.push("/");
     } catch (err) {
       console.log(err);
     }
   };
 
-  const configAuthWrapper = { headline: 'Log in' };
+  const configAuthWrapper = { headline: "Log in" };
   return (
     <AuthWrapper {...configAuthWrapper}>
       <div className="formWrap">
@@ -66,4 +67,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default withRouter(SignIn);
