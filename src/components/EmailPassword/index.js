@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { resetPassword } from "../../redux/user/user.actions";
+import {
+  resetPassword,
+  resetAllAuthForms,
+} from '../../redux/user/user.actions';
 
-import "./styles.scss";
+import './styles.scss';
 
-import AuthWrapper from "../../components/AuthWrapper";
-import FormInput from "../../components/Form/FormInput";
-import Button from "../../components/Form/Button";
+import AuthWrapper from '../../components/AuthWrapper';
+import FormInput from '../../components/Form/FormInput';
+import Button from '../../components/Form/Button';
 
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
 const mapState = ({ user }) => ({
   resetPasswordSucces: user.resetPasswordSucces,
@@ -17,7 +20,7 @@ const mapState = ({ user }) => ({
 });
 
 const EmailPassword = (props) => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [errors, setErrors] = useState([]);
 
   const { resetPasswordSucces, resetPasswordError } = useSelector(mapState);
@@ -27,7 +30,8 @@ const EmailPassword = (props) => {
   useEffect(() => {
     console.log(resetPasswordSucces);
     if (resetPasswordSucces) {
-      props.history.push("/login");
+      dispatch(resetAllAuthForms());
+      props.history.push('/login');
     }
   }, [resetPasswordSucces]);
 
@@ -43,7 +47,7 @@ const EmailPassword = (props) => {
   };
 
   const configAuthWrapper = {
-    headline: "Email Password",
+    headline: 'Email Password',
   };
 
   return (

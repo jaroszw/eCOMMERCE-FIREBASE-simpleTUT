@@ -1,4 +1,4 @@
-import userTypes from "./user.types";
+import userTypes from './user.types';
 
 const INITIAL_STATE = {
   currentUser: null,
@@ -45,6 +45,16 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         resetPasswordError: action.payload,
+      };
+
+    case userTypes.RESSET_AUTH_FORMS:
+      return {
+        ...state,
+        signInSuccess: false,
+        signUpSuccess: false,
+        singUpError: [],
+        resetPasswordSucces: false,
+        resetPasswordError: [],
       };
 
     default:

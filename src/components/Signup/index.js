@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { withRouter } from "react-router-dom";
-import "./styles.scss";
+import { withRouter } from 'react-router-dom';
+import './styles.scss';
 
-import FormInput from "../../components/Form/FormInput";
-import Button from "../../components/Form/Button";
-import AuthWrapper from "../../components/AuthWrapper";
+import FormInput from '../../components/Form/FormInput';
+import Button from '../../components/Form/Button';
+import AuthWrapper from '../../components/AuthWrapper';
 
-import { signUpUser } from "../../redux/user/user.actions";
+import { signUpUser, resetAllAuthForms } from '../../redux/user/user.actions';
 
 const mapState = ({ user }) => ({
   signUpSuccess: user.signUpSuccess,
@@ -21,17 +21,17 @@ const Signup = (props) => {
 
   const dispatch = useDispatch();
 
-  const [displayName, setDisplayName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [displayName, setDisplayName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState([]);
 
   const resetState = () => {
-    setDisplayName("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
+    setDisplayName('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
     setErrors([]);
   };
 
@@ -39,7 +39,8 @@ const Signup = (props) => {
     console.log(signUpSuccess);
     if (signUpSuccess) {
       resetState();
-      props.history.push("/");
+      dispatch(resetAllAuthForms());
+      props.history.push('/');
     }
   }, [signUpSuccess]);
 
@@ -54,7 +55,7 @@ const Signup = (props) => {
     dispatch(signUpUser({ displayName, email, password, confirmPassword }));
   };
 
-  const configAuthWrapper = { headline: "Sign Up" };
+  const configAuthWrapper = { headline: 'Sign Up' };
   return (
     <AuthWrapper {...configAuthWrapper}>
       {errors.length > 0 && (

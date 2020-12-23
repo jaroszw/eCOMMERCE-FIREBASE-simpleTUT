@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { signInUser } from "../../redux/user/user.actions";
-import "./styles.scss";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  signInUser,
+  SignInWithGoogle,
+  resetAllAuthForms,
+} from '../../redux/user/user.actions';
+import './styles.scss';
 
-import { SignInWithGoogle } from "../../firebase/utils";
-import { Link, withRouter } from "react-router-dom";
+// import { SignInWithGoogle } from '../../firebase/utils';
+import { Link, withRouter } from 'react-router-dom';
 
-import Button from "../Form/Button";
-import FromInput from "../Form/FormInput";
-import AuthWrapper from "../../components/AuthWrapper";
+import Button from '../Form/Button';
+import FromInput from '../Form/FormInput';
+import AuthWrapper from '../../components/AuthWrapper';
 
 const mapState = ({ user }) => ({
   signInSuccess: user.signInSuccess,
@@ -17,19 +21,20 @@ const mapState = ({ user }) => ({
 const SignIn = (props) => {
   const { signInSuccess } = useSelector(mapState);
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     if (signInSuccess) {
       resetForm();
-      props.history.push("/");
+      dispatch(resetAllAuthForms());
+      props.history.push('/');
     }
   }, [signInSuccess]);
 
   const resetForm = () => {
-    setEmail("");
-    setPassword("");
+    setEmail('');
+    setPassword('');
   };
 
   const handleSubmit = (e) => {
@@ -37,7 +42,12 @@ const SignIn = (props) => {
     dispatch(signInUser({ email, password }));
   };
 
-  const configAuthWrapper = { headline: "Log in" };
+  const handleGoogleSignIn = () => {
+    dispatch(SignInWithGoogle());
+  };
+
+  const configAuthWrapper = { headline: 'Log in' };
+
   return (
     <AuthWrapper {...configAuthWrapper}>
       <div className="formWrap">
@@ -61,7 +71,7 @@ const SignIn = (props) => {
 
           <div className="socialSignin">
             <div className="row">
-              <Button isGoogle onClick={SignInWithGoogle}>
+              <Button isGoogle onClick={handleGoogleSignIn}>
                 Sign In wit Google
               </Button>
             </div>
