@@ -1,12 +1,19 @@
 import React from "react";
-import "./styles.scss";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import { auth } from "./../../firebase/utils";
 
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
-const Header = ({ currentUser }) => {
+import "./styles.scss";
+
+const mapState = ({ user }) => ({
+  currentUser: user.currentUser,
+});
+
+const Header = () => {
+  const { currentUser } = useSelector(mapState);
+
   return (
     <header className="header">
       <div className="wrap">
@@ -47,8 +54,4 @@ Header.defaultProps = {
   currentUser: null,
 };
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser,
-});
-
-export default connect(mapStateToProps, null)(Header);
+export default Header;

@@ -2,6 +2,7 @@ import React from "react";
 import "./styles.scss";
 
 const Dashboard = (props) => {
+  console.log(props);
   return <h1>Your logged in</h1>;
 };
 

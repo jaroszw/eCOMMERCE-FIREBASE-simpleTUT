@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 import { auth, handleUserProfile } from "./firebase/utils";
 import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
