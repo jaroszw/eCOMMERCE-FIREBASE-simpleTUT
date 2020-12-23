@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { signUpUser } from "../../redux/user/user.actions";
 
 import { withRouter } from "react-router-dom";
 import "./styles.scss";
@@ -9,13 +8,17 @@ import FormInput from "../../components/Form/FormInput";
 import Button from "../../components/Form/Button";
 import AuthWrapper from "../../components/AuthWrapper";
 
+import { signUpUser } from "../../redux/user/user.actions";
+
 const mapState = ({ user }) => ({
-  SignUpSccess: user.signUpSuccess,
+  signUpSuccess: user.signUpSuccess,
   signUpError: user.signUpError,
 });
 
 const Signup = (props) => {
-  const { signUpError, SignUpSccess } = useSelector(mapState);
+  const { signUpSuccess } = useSelector(mapState);
+  const { signUpError } = useSelector(mapState);
+
   const dispatch = useDispatch();
 
   const [displayName, setDisplayName] = useState("");
@@ -23,18 +26,6 @@ const Signup = (props) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
-
-  useEffect(() => {
-    if (SignUpSccess) {
-      resetState();
-      props.history.push("/");
-    }
-  }, [SignUpSccess]);
-  useEffect(() => {
-    if (Array.isArray(signUpError) && signUpError.length > 0) {
-      setErrors(signUpError);
-    }
-  }, [signUpError]);
 
   const resetState = () => {
     setDisplayName("");
@@ -44,13 +35,26 @@ const Signup = (props) => {
     setErrors([]);
   };
 
-  const handleFormSubmit = (e) => {
+  useEffect(() => {
+    console.log(signUpSuccess);
+    if (signUpSuccess) {
+      resetState();
+      props.history.push("/");
+    }
+  }, [signUpSuccess]);
+
+  useEffect(() => {
+    if (Array.isArray(signUpError) && signUpError.length > 0) {
+      setErrors(signUpError);
+    }
+  }, [signUpError]);
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    dispatch(signUpUser(displayName, email, password, confirmPassword));
+    dispatch(signUpUser({ displayName, email, password, confirmPassword }));
   };
 
   const configAuthWrapper = { headline: "Sign Up" };
-
   return (
     <AuthWrapper {...configAuthWrapper}>
       {errors.length > 0 && (

@@ -1,40 +1,49 @@
-import React, { useState } from 'react';
-import './styles.scss';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import AuthWrapper from '../../components/AuthWrapper';
-import FormInput from '../../components/Form/FormInput';
-import Button from '../../components/Form/Button';
+import { resetPassword } from "../../redux/user/user.actions";
 
-import { auth } from '../../firebase/utils';
-import { withRouter } from 'react-router-dom';
+import "./styles.scss";
+
+import AuthWrapper from "../../components/AuthWrapper";
+import FormInput from "../../components/Form/FormInput";
+import Button from "../../components/Form/Button";
+
+import { withRouter } from "react-router-dom";
+
+const mapState = ({ user }) => ({
+  resetPasswordSucces: user.resetPasswordSucces,
+  resetPasswordError: user.resetPasswordError,
+});
 
 const EmailPassword = (props) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [errors, setErrors] = useState([]);
+
+  const { resetPasswordSucces, resetPasswordError } = useSelector(mapState);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(resetPasswordSucces);
+    if (resetPasswordSucces) {
+      props.history.push("/login");
+    }
+  }, [resetPasswordSucces]);
+
+  useEffect(() => {
+    if (Array.isArray(resetPassword) && resetPasswordError.length > 0) {
+      setErrors(resetPasswordError);
+    }
+  }, [resetPasswordError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const config = {
-        url: 'http://localhost:3000/login',
-      };
-      await auth
-        .sendPasswordResetEmail(email, config)
-        .then(() => {
-          props.history.push('/login');
-        })
-        .catch(() => {
-          const err = ['Email not found. Please try again'];
-          setErrors(err);
-        });
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(resetPassword({ email }));
   };
 
   const configAuthWrapper = {
-    headline: 'Email Password',
+    headline: "Email Password",
   };
 
   return (

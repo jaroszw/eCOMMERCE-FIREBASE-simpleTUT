@@ -30,8 +30,10 @@ export const signUpUser = ({
       type: userTypes.SIGN_UP_ERROR,
       payload: err,
     });
+
     return;
   }
+
   try {
     const { user } = await auth.createUserWithEmailAndPassword(email, password);
     await handleUserProfile(user, { displayName });
@@ -39,6 +41,31 @@ export const signUpUser = ({
       type: userTypes.SIGN_UP_SUCCESS,
       payload: true,
     });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const resetPassword = ({ email }) => async (dispatch) => {
+  const config = {
+    url: "http://localhost:3000/login",
+  };
+  try {
+    await auth
+      .sendPasswordResetEmail(email, config)
+      .then(() => {
+        dispatch({
+          type: userTypes.RESSET_PASSWORD_SUCCESS,
+          payload: true,
+        });
+      })
+      .catch(() => {
+        const err = ["Email not found. Please try again"];
+        dispatch({
+          type: userTypes.RESSET_PASSWORD_ERROR,
+          payload: err,
+        });
+      });
   } catch (err) {
     console.log(err);
   }
