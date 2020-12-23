@@ -1,20 +1,19 @@
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
-const mapState = ({ user }) => ({
-  currentUser: user.currentUser,
+const mapState = (state) => ({
+  currentUser: state.user.currentUser,
 });
 
 const useAuth = (props) => {
-  const { currentUSer } = useSelector(mapState);
+  const { currentUser } = useSelector(mapState);
 
   useEffect(() => {
-    if(!currentUSer){
-      
+    if (!currentUser) {
+      props.history.push("/login");
     }
-  }, [currentUSer]);
-
-  return currentUSer;
+  }, [currentUser]);
+  return currentUser;
 };
 
 export default useAuth;
